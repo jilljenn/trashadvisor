@@ -1,0 +1,26 @@
+version: '2'
+services:
+  data:
+    image: debian:jessie
+    volumes:
+      - ./data:/srv/data
+  web:
+    build: app
+    command: php -S 0.0.0.0:8000 -t /app
+    links:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    volumes_from:
+      - data
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: myapp
