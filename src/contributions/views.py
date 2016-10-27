@@ -8,7 +8,7 @@ def contribuer(request):
     dustbins = Dustbin.objects.all().order_by('order')
 
     w = [{'path': waste.image.url, 'name': waste.name} for waste in wastes]
-    d = [{'path': dustbin.image.url, 'name': dustbin.name} for dustbin in dustbins]
+    d = [{'path': dustbin.image.url, 'name': dustbin.name, 'color':dustbin.color} for dustbin in dustbins]
 
     return JsonResponse({'dechet': w, 'poubelle': d})
     # return render(request, 'contribuer.html', {
