@@ -15,10 +15,15 @@ services:
       - ./app:/app
   db:
     image: mysql
+    restart: always
     ports:
       - "3306:3306"
+    # volumes:
+    #   - "./.data/db:/var/lib/mysql"
     volumes_from:
       - data
+    volumes:
+      - /var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_USER: dev

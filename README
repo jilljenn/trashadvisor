@@ -34,5 +34,11 @@ docker-compose run db bash
 /etc/init.d/mysql start
 mysql -u root -p123456
 create database myapp
-mysql -u root -p123456 myapp /src/data/trashadvisor.php
+mysql -u root -p123456 myapp < /src/data/trashadvisor.php
+```
+
+
+```
+eval "$(docker-machine env brahms)"
+docker-compose run db /srv/data/restore_db.sh
 ```
