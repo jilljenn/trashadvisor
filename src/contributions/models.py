@@ -1,0 +1,33 @@
+from __future__ import unicode_literals
+
+from django.db import models
+
+
+class Dustbin(models.Model):
+    order = models.PositiveIntegerField()
+    color = models.CharField(max_length=7)
+    image = models.ImageField(upload_to="dustbin/", blank=True, null=True)
+    name = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Waste(models.Model):
+    order = models.PositiveIntegerField()
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="waste/", blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Contribution(models.Model):
+    insee = models.CharField(max_length=5)
+    timestamp = models.DateTimeField(auto_now=True)
+
+
+class Trash(models.Model):
+    dustbin = models.ForeignKey(Dustbin)
+    waste = models.ForeignKey(Waste)
+    contribution = models.ForeignKey(Contribution)
