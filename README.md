@@ -77,3 +77,17 @@ $ curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compo
 $ chmod +x /opt/bin/docker-compose
 $ exit
 ```
+
+TODO
+
+* faire les 3 vues
+* intégrer drag-n-drop
+* faire la migration ajouter commune
+* faire la migration remplir commune
+* ajouter postgis
+
+
+DONE
+
+* récupérer les données de la base
+* sauvegarder les données de référence (poubelle, déchets)

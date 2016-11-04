@@ -1,5 +1,48 @@
 {% extends 'base.html' %}
 
+{% block head %}
+{{ block.super }}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"></script>
+{% endblock head %}
+
 {% block body %}
+<h1>Merci ! Vous êtes le {{ contributeur_num }}{{ contributeur_num|pluralize:"er,ème" }} contributeur pour {{ ville|upper }}</h1>
+
+<br>
+<script type="text/javascript">
+	Chart.defaults.global.legend.display = false;
+	Chart.defaults.global.tooltips.enabled = false;
+</script>
+<div class="row">
+{% for waste in wastes %}
+<div class="col-sm-1">
+<img class="img-responsive" src="{{ waste.image.url }}">
+
+</div>
+
+{% endfor %}
+</div>
+
+<div class="row">
+{% for data in datas %}
+
+    <div class="col-sm-1">
+	<canvas id="myChart{{ forloop.counter0 }}" width="100%" height="100%"></canvas>
+	<script>
+	var ctx = document.getElementById("myChart{{ forloop.counter0 }}");
+	var myChart = new Chart(ctx, {
+		type: 'pie',
+		data: {{ data|safe }}
+	})
+	</script>
+	</div>
+
+{% endfor %}
+</div>
+
+<br>
+Vous êtes le {{ contributeur_num_nat }}{{ contributeur_num_nat|pluralize:"er,ème" }} contributeur au niveau national.
+Grâce à votre contribution la couleur des poubelles est recensée dans {{ communes_couvertes }} communes.
+
 {{ foo }}
 {% endblock body %}

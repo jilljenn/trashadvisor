@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.gis.db import models as gis_models
 
 
 class Dustbin(models.Model):
@@ -22,12 +23,28 @@ class Waste(models.Model):
         return self.name
 
 
+class Commune(gis_models.Model):
+    insee = models.CharField(max_length=5)
+    geometry = gis_models.GeometryCollectionField(blank=True, null=True)
+
+
 class Contribution(models.Model):
     insee = models.CharField(max_length=5)
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField()
+    commune = models.ForeignKey(Commune, null=True, blank=True)
 
 
 class Trash(models.Model):
     dustbin = models.ForeignKey(Dustbin)
     waste = models.ForeignKey(Waste)
     contribution = models.ForeignKey(Contribution)
+
+
+class Legacy(models.Model):
+    id_declarant = models.IntegerField(max_length=11)
+    conteneur_type = models.CharField(max_length=20)
+    conteneur_couleur = models.CharField(max_length=20)
+    dechet_type = models.CharField(max_length=32)
+    code_postal = models.IntegerField(max_length=5)
+    code_insee = models.CharField(max_length=32)
+    declaration_date = models.DateTimeField(auto_now=True)

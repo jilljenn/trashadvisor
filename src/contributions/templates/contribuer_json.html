@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{{ foo }}
+
+{% for waste in wastes %}
+	{{ waste.name }}
+{% endfor %}
+<br>
+{% for dustbin in dustbins %}
+	<li>{{ dustbin.name }}
+	{{ dustbin.color }}</li>
+{% endfor %}
+
+{% endblock body %}

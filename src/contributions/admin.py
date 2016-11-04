@@ -25,4 +25,6 @@ class DustbinAdmin(admin.ModelAdmin):
 admin.site.register(Dustbin, DustbinAdmin)
 admin.site.register(Waste, WasteAdmin)
 admin.site.register(Trash)
+admin.site.register(Legacy)
+admin.site.register(Commune)
 admin.site.register(Contribution, ContributionAdmin)

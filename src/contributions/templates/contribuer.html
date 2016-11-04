@@ -1,15 +1,27 @@
 {% extends 'base.html' %}
 
 {% block body %}
-{{ foo }}
+<h1>De quelles couleur sont vos poubelles ?</h1>
 
-{% for waste in wastes %}
-	{{ waste.name }}
-{% endfor %}
-<br>
-{% for dustbin in dustbins %}
-	<li>{{ dustbin.name }}
-	{{ dustbin.color }}</li>
-{% endfor %}
+formulaire
 
+<form action="{% url 'contribuer' %}" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+{{ formset.as_p }}
+
+<input type="submit" />
+
+</form>
+
+carte de france
+
+
+votre contribution est anonyme, les données collectées ont vocation à être ouvertes dans un objectif de création de biens communs.
+
+facebook like share
+email
+twitter
+en savoir plus
+nous contacter
 {% endblock body %}

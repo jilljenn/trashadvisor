@@ -25,6 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'leaflet',
+    'djgeojson',
     'contributions'
 ]
 
@@ -64,7 +67,7 @@ WSGI_APPLICATION = 'trashadvisor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'mysecretpassword',
@@ -111,3 +114,12 @@ STATIC_ROOT = '/var/www/static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/var/www/media'
+
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (47, 2.0),
+    'DEFAULT_ZOOM': 6,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+    'TILES': 'http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+}
