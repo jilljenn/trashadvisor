@@ -12,6 +12,7 @@ def forward(apps, schema_editor):
     for contribution in contributions:
         commune, create = Commune.objects.get_or_create(insee=contribution.insee)
         contribution.commune = commune
+        contribution.save()
 
 
 def backward(apps, schema_editor):

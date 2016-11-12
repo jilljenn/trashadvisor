@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from .models import *
+from .models import Dustbin, Waste, Trash, Legacy, Commune, Contribution
 
 
 class TrashInline(admin.TabularInline):
@@ -14,7 +15,7 @@ class ContributionAdmin(admin.ModelAdmin):
 
 class WasteAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'order', 'image')
-    list_editable = ('order', 'image' )
+    list_editable = ('order', 'image')
 
 
 class DustbinAdmin(admin.ModelAdmin):

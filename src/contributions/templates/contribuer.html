@@ -1,27 +1,183 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  {{ block.super }}
+  <script>
+    var iosDragDropShim = { enableEnterLeave: true }
+  </script>
+  <script src="{% static "js/ios-drag-drop.js" %}"></script>
+  <style type="text/css">
+    #wastes {
+      margin-left:auto;
+      margin-right:auto;
+      border: 1px solid black;
+      min-height: 100px;
+    }
+    #wastes > div {
+      float: left;
+    }
+    #insee {
+      width: 200px;
+    }
+  </style>
+{% endblock head %}
 
 {% block body %}
-<h1>De quelles couleur sont vos poubelles ?</h1>
+  <h1>De quelles couleur sont vos poubelles ?</h1>
 
-formulaire
+  <div ondrop="drop_handler(event);" ondragover="dragover_handler(event);" id="wastes">
+      {% for waste in wastes %}
+      <div draggable="true" ondragstart="dragstart_handler(event);" id="waste-{{ waste.id }}" data-waste="{{ waste.id }}">
+        <img class="card-img-top" draggable="false" src="{{ waste.image.url }}" alt="{{ waste.name }}">
+      </div>
+      {% endfor %}
+      <div style="clear: both"></div>
+  </div>
 
-<form action="{% url 'contribuer' %}" method="post">
-{% csrf_token %}
-{{ form.as_p }}
-{{ formset.as_p }}
+  <table style="margin-left:auto; margin-right:auto; border: 1px solid black">
+    <tr>
+      {% for dustbin in dustbins %}
+      <td style="vertical-align:top;">
+        <div class="card text-xs-center dustbin" ondragover="dragover_handler(event);" ondrop="drop_handler(event);" data-dustbin="{{ dustbin.id }}">
+          <img class="card-img-top" draggable="false"  src="{{ dustbin.image.url }}" alt="{{ dustbin.name }}">
+          <div class="drop-zone"></div>
+        </div>
+      </td>
+      {% endfor %}
+    </tr>
+  </table>
 
-<input type="submit" />
+  <form action="{% url 'contribuer' %}" method="post" id="contribution-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <select id="insee">
+    </select>
+    <input type="submit" />
+  </form>
 
-</form>
 
-carte de france
+  <div id="mapArea" class="blackboard" style="width: 500px;border: 4px solid #c0c0c0;">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" width="100%" x="0" y="0"></svg>
+  </div>
 
+  <div>
+  Votre contribution est anonyme, les données collectées ont vocation à être ouvertes dans un objectif de création de biens communs.
 
-votre contribution est anonyme, les données collectées ont vocation à être ouvertes dans un objectif de création de biens communs.
-
-facebook like share
-email
-twitter
-en savoir plus
-nous contacter
+  facebook like share
+  email
+  twitter
+  en savoir plus
+  nous contacter
+  </div>
 {% endblock body %}
+
+{% block bottom %}
+  {{ block.super }}
+
+  <script type="text/javascript">
+    /* geojson2svg client side converter */
+    !function(){function e(e){var t=document.createElementNS("http://www.w3.org/1999/xhtml","div");t.innerHTML='<svg xmlns="http://www.w3.org/2000/svg">'+e+"</svg>";for(var n=document.createDocumentFragment();t.firstChild.firstChild;)n.appendChild(t.firstChild.firstChild);return n}"undefined"!=typeof module&&module.exports&&(module.exports=e),"undefined"!=typeof window&&(window.parseSVG=e)}();
+  </script>
+
+  <script type="text/javascript">
+
+  /* form submission */
+  $("#contribution-form").submit(function(event){
+    data = {};
+    $('#id_insee').val($('#insee').val());
+    $('#dustbins').children().each(function(i){
+      var key = $(this).data().dustbin
+      data[key] = [];
+      $(this).find('.waste').each(function(j){
+        data[key].push($(this).data().waste);
+      })
+    })
+    $('#id_trashes').val(JSON.stringify(data))
+  });
+
+  /* drag and drop handlers */
+  function dragstart_handler(ev) {
+    ev.dataTransfer.setData("text/plain", ev.target.id);
+  }
+  function dragover_handler(ev) {
+    ev.preventDefault();
+    ev.dataTransfer.dropEffect = "move"
+  }
+  function drop_handler(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var dropZone = $(ev.target).closest(".dustbin").find(".drop-zone")
+    console.log(dropZone)
+    if(dropZone.length > 0){
+      dropZone.append(document.getElementById(data));
+    }else{
+      $('#wastes').prepend(document.getElementById(data));
+    }
+
+  }
+
+  /* geojson svg */
+  /*
+  var l =  -4.766667,
+    r = 8.245,
+    b = 42.32944,
+    t = 51.09639;
+
+  var ratio = (t-b)/(-1*l+r);
+
+  var container = document.getElementById('mapArea'),
+    width = container.offsetWidth,
+    svgMap = document.getElementById('map');
+    svgMap.setAttribute('width', width);
+    svgMap.setAttribute('height', width*ratio);
+
+  var converter = geojson2svg(
+    {
+      viewportExtent: {width: width, height: width},
+      attributes: {'style': 'stroke:#000000; fill: #cc99aa;stroke-width:1px;'},
+      mapExtent: {left: l, right: r, bottom: b, top: t}
+    }
+  );
+
+  var geojson = {{ geojson|safe }};
+  for(var i=0; i< geojson.features.length; i++){
+    var svgString = converter.convert(geojson.features[i].geometry);
+    var svg = parseSVG(svgString);
+    svgMap.appendChild(svg);
+  };
+  */
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+
+  <script type="text/javascript">
+    $('#insee').select2({
+      selectOnClose: true,
+      multiple:false,
+      minimumInputLength: 1,
+      ajax:{
+        url: 'https://geo.api.gouv.fr/communes',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          return {
+            nom: params.term
+          };
+        },
+        processResults: function (data, params) {
+          return {
+            results: data.map(function(item) {
+                        return {
+                            id : item.code,
+                            text : item.nom+' ('+item.codePostal+')'
+                        };
+                      })
+          };
+        },
+        cache: true
+        },
+        escapeMarkup: function (markup) { return markup; }
+    });
+  </script>
+{% endblock bottom %}
