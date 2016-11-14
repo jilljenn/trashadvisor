@@ -55,6 +55,59 @@ def resultat(request, pk):
     communes_couvertes = contributions.distinct('insee').count()
     r = requests.get('https://geo.api.gouv.fr/communes?code=%s' % (contribution.insee))
 
+    arrondissements = {
+      '75101':"Paris 1er",
+      '75102':"Paris 2e",
+      '75103':"Paris 3e",
+      '75104':"Paris 4e",
+      '75105':"Paris 5e",
+      '75106':"Paris 6e",
+      '75107':"Paris 7e",
+      '75108':"Paris 8e",
+      '75109':"Paris 9e",
+      '75110':"Paris 10e",
+      '75111':"Paris 11e",
+      '75112':"Paris 12e",
+      '75113':"Paris 13e",
+      '75114':"Paris 14e",
+      '75115':"Paris 15e",
+      '75116':"Paris 16e",
+      '75117':"Paris 17e",
+      '75118':"Paris 18e",
+      '75119':"Paris 19e",
+      '75120':"Paris 20e",
+      '69381':"Lyon 1er",
+      '69382':"Lyon 2e",
+      '69383':"Lyon 3e",
+      '69384':"Lyon 4e",
+      '69385':"Lyon 5e",
+      '69386':"Lyon 6e",
+      '69387':"Lyon 7e",
+      '69388':"Lyon 8e",
+      '69389':"Lyon 9e",
+      '13201':"Marseille 1er",
+      '13202':"Marseille 2e",
+      '13203':"Marseille 3e",
+      '13204':"Marseille 4e",
+      '13205':"Marseille 5e",
+      '13206':"Marseille 6e",
+      '13207':"Marseille 7e",
+      '13208':"Marseille 8e",
+      '13209':"Marseille 9e",
+      '13210':"Marseille 10e",
+      '13211':"Marseille 11e",
+      '13212':"Marseille 12e",
+      '13213':"Marseille 13e",
+      '13214':"Marseille 14e",
+      '13215':"Marseille 15e",
+      '13216':"Marseille 16e"
+    }
+
+    if len(r.json()) == 0:
+        ville = arrondissements[contribution.insee]
+    else:
+        ville = r.json()[0]['nom']
+
     # c'est moche c'est moche c'est moche
     colors = list(Dustbin.objects.all().order_by('order').values_list('name', flat=True))
     colors = [str(b) for b in colors]
@@ -72,7 +125,7 @@ def resultat(request, pk):
 
     return render(request, 'resultat.html', {
         'contributeur_num': contributeur_num,
-        'ville': r.json()[0]['nom'],
+        'ville': ville,
         'contributeur_num_nat': contributeur_num_nat,
         'communes_couvertes': communes_couvertes,
         'datas': datas,
