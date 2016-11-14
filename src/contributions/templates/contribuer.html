@@ -55,10 +55,8 @@
     #insee {
       width: 100%;
     }
-    .dropped {
-      background-color: #567204;
-    }
     #log {
+      display: none;
       width: 100%;
       height: 300px;
     }
@@ -173,7 +171,6 @@
     $('#log').val($('#log').val()+'\n DROP')
     ev.preventDefault();
     var data = ev.dataTransfer.getData("Text");
-    ev.target.className="dropped";
     var dropZone = $(ev.target).closest(".dustbin").find(".drop-zone");
     $('#log').val($('#log').val()+'\n DROPZONE from ' + data)
     if(dropZone.length > 0){
