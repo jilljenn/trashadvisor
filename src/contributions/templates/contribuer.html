@@ -174,7 +174,8 @@
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.className="dropped";
-    var dropZone = $(ev.target).closest(".dustbin").find(".drop-zone")
+    var dropZone = $(ev.target).closest(".dustbin").find(".drop-zone");
+    $('#log').val($('#log').val()+'\n DROPZONE from ' + data)
     if(dropZone.length > 0){
       dropZone.append(document.getElementById(data));
     }else{
