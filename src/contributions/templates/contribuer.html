@@ -55,6 +55,13 @@
     #insee {
       width: 100%;
     }
+    .dropped {
+      background-color: #567204;
+    }
+    #log {
+      width: 100%;
+      height: 300px;
+    }
   </style>
 {% endblock head %}
 
@@ -93,6 +100,8 @@
         </div>
       {% endfor %}
   </div>
+
+  <textarea id="log"></textarea>
 
 
     {% csrf_token %}
@@ -152,15 +161,19 @@
   /* drag and drop handlers */
   function dragstart_handler(ev) {
     ev.dataTransfer.setData("text/plain", ev.target.id);
+    $('#log').val($('#log').val()+'\n DRAG START:'+ev.target.id)
   }
   function dragover_handler(ev) {
     ev.preventDefault();
     ev.dataTransfer.dropEffect = "move";
+    $('#log').val($('#log').val()+'DRAG OVER')
     return false;
   }
   function drop_handler(ev) {
+    $('#log').val($('#log').val()+'\n DROP')
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
+    ev.target.className="dropped";
     var dropZone = $(ev.target).closest(".dustbin").find(".drop-zone")
     if(dropZone.length > 0){
       dropZone.append(document.getElementById(data));
