@@ -155,7 +155,8 @@
   }
   function dragover_handler(ev) {
     ev.preventDefault();
-    ev.dataTransfer.dropEffect = "move"
+    ev.dataTransfer.dropEffect = "move";
+    return false;
   }
   function drop_handler(ev) {
     ev.preventDefault();
@@ -166,7 +167,7 @@
     }else{
       $('#wastes').prepend(document.getElementById(data));
     }
-
+    return false;
   }
 
   /* geojson svg */
@@ -207,24 +208,24 @@
     $('#insee').select2({
       selectOnClose: true,
       multiple:false,
-      minimumInputLength: 1,
+      minimumInputLength: 5,
       ajax:{
         url: 'https://geo.api.gouv.fr/communes',
         dataType: 'json',
         delay: 250,
         data: function (params) {
           return {
-            nom: params.term
+            codePostal: params.term
           };
         },
         processResults: function (data, params) {
           return {
             results: data.map(function(item) {
-                        return {
-                            id : item.code,
-                            text : item.nom+' ('+item.codePostal+')'
-                        };
-                      })
+              return {
+                id : item.code,
+                text : item.codesPostaux+' '+item.nom
+              };
+            })
           };
         },
         cache: true
