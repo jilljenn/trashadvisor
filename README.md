@@ -82,8 +82,9 @@ TODO
 
 * sauvegarder waste avec les bonnes ref url
 * supprimer insee de contribution
-* intégrer les arrondissements dans une migration
 * fixer le pb du drag and drop
 * image pour jérome
 
 DONE
+
+* intégrer les arrondissements dans une migration
