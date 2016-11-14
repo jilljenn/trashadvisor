@@ -13,6 +13,10 @@ class ContributionAdmin(admin.ModelAdmin):
     inlines = (TrashInline,)
 
 
+class CommuneAdmin(admin.ModelAdmin):
+    list_display = ('id', 'insee')
+
+
 class WasteAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'order', 'image')
     list_editable = ('order', 'image')
@@ -27,5 +31,5 @@ admin.site.register(Dustbin, DustbinAdmin)
 admin.site.register(Waste, WasteAdmin)
 admin.site.register(Trash)
 admin.site.register(Legacy)
-admin.site.register(Commune)
+admin.site.register(Commune, CommuneAdmin)
 admin.site.register(Contribution, ContributionAdmin)
