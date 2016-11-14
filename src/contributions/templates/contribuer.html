@@ -161,7 +161,6 @@
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     var dropZone = $(ev.target).closest(".dustbin").find(".drop-zone")
-    console.log(dropZone)
     if(dropZone.length > 0){
       dropZone.append(document.getElementById(data));
     }else{
