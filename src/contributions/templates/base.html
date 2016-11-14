@@ -10,9 +10,23 @@
     {% endblock head %}
   </head>
   <body>
+    <div class="container" style="margin-bottom: 20px">
+      <nav class="navbar navbar-light bg-faded">
+        <h1 class="navbar-brand mb-0" href="#">TrashAdvisor</h1>
+      </nav>
+    </div>
     <div class="container">
       {% block body %}
       {% endblock body %}
+    </div>
+    <div class="container">
+      <ul class="list-inline">
+        <li class="list-inline-item">facebook like share</li>
+        <li class="list-inline-item">email</li>
+        <li class="list-inline-item">twitter</li>
+        <li class="list-inline-item">en savoir plus</li>
+        <li class="list-inline-item">nous contacter</li>
+      </ul>
     </div>
     {% block bottom %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>

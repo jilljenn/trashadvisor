@@ -11,65 +11,118 @@
     #wastes {
       margin-left:auto;
       margin-right:auto;
-      border: 1px solid black;
-      min-height: 100px;
+      text-align: center;
     }
     #wastes > div {
-      float: left;
+      display:inline-block;
+      vertical-align: top;
+    }
+    .waste {
+      width:60px;
+      height: 85px;
+      text-align: center;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      cursor: pointer;
+      margin:3px;
+      font-size: 0.6em
+    }
+    .waste:hover {
+      background-color: #ddd;
+      border:1px solid #888;
+    }
+    .waste img {
+      width:50px;
+      height: 50px;
+    }
+    #dustbins {
+      margin-left:auto;
+      margin-right:auto;
+      text-align: center;
+    }
+    #dustbins > div {
+      display:inline-block;
+      vertical-align: top;
+    }
+    .dustbin {
+      width:66px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+    }
+    .dustbin img {
+      width:60px;
     }
     #insee {
-      width: 200px;
+      width: 100%;
     }
   </style>
 {% endblock head %}
 
 {% block body %}
-  <h1>De quelles couleur sont vos poubelles ?</h1>
+  <div class="row">
+
+    <div class="col-md-7">
+      <h5>De quelles couleurs sont les poubelles dans votre commune ?</h5>
+      <br>
+
+  <form action="{% url 'contribuer' %}" method="post" id="contribution-form">
+
+<label for="insee"><strong>Glissez les déchets dans les bonnes poubelles !</strong></label>
+<p id="passwordHelpBlock" class="form-text text-muted">
+  En cas de doute, mettez le déchet dans la poubelle "je ne sais pas".
+</p>
 
   <div ondrop="drop_handler(event);" ondragover="dragover_handler(event);" id="wastes">
       {% for waste in wastes %}
-      <div draggable="true" ondragstart="dragstart_handler(event);" id="waste-{{ waste.id }}" data-waste="{{ waste.id }}">
+      <div draggable="true" class="waste" ondragstart="dragstart_handler(event);" id="waste-{{ waste.id }}" data-waste="{{ waste.id }}">
         <img class="card-img-top" draggable="false" src="{{ waste.image.url }}" alt="{{ waste.name }}">
+        {{ waste.name|title }}
       </div>
       {% endfor %}
       <div style="clear: both"></div>
   </div>
 
-  <table style="margin-left:auto; margin-right:auto; border: 1px solid black">
-    <tr>
+  <div style="font-size: 2.5em; font-weight: bold;text-align: center;">⇓</div>
+
+  <div id="dustbins">
       {% for dustbin in dustbins %}
-      <td style="vertical-align:top;">
-        <div class="card text-xs-center dustbin" ondragover="dragover_handler(event);" ondrop="drop_handler(event);" data-dustbin="{{ dustbin.id }}">
+        <div class="dustbin" ondragover="dragover_handler(event);" ondrop="drop_handler(event);" data-dustbin="{{ dustbin.id }}">
           <img class="card-img-top" draggable="false"  src="{{ dustbin.image.url }}" alt="{{ dustbin.name }}">
+          <span style="font-size: 0.6em">{{ dustbin.name|title }}</span>
           <div class="drop-zone"></div>
         </div>
-      </td>
       {% endfor %}
-    </tr>
-  </table>
+  </div>
 
-  <form action="{% url 'contribuer' %}" method="post" id="contribution-form">
+
     {% csrf_token %}
     {{ form.as_p }}
-    <select id="insee">
-    </select>
-    <input type="submit" />
+    <div class="form-group">
+      <label for="insee"><strong>Indiquez le code postal de votre commune</strong></label>
+      <br>
+      <select id="insee" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Contribuer</button>
+    <br>
+    <div class="alert alert-success">
+        <p>Votre contribution est anonyme.
+    <br>
+    Les données collectées ont vocation à être ouvertes dans un objectif de création de bien commun.
+    </p>
+    </div>
   </form>
 
+    </div>
+    <div class="col-md-5">
 
-  <div id="mapArea" class="blackboard" style="width: 500px;border: 4px solid #c0c0c0;">
+  <div id="mapArea" class="blackboard" style="width: 500px;border: 1px solid #c0c0c0;">
     <svg id="map" xmlns="http://www.w3.org/2000/svg" width="100%" x="0" y="0"></svg>
   </div>
 
-  <div>
-  Votre contribution est anonyme, les données collectées ont vocation à être ouvertes dans un objectif de création de biens communs.
-
-  facebook like share
-  email
-  twitter
-  en savoir plus
-  nous contacter
+    </div>
   </div>
+
 {% endblock body %}
 
 {% block bottom %}

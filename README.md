@@ -80,14 +80,7 @@ $ exit
 
 TODO
 
-* faire les 3 vues
-* intégrer drag-n-drop
-* faire la migration ajouter commune
-* faire la migration remplir commune
-* ajouter postgis
-
+* sauvegarder waste avec les bonnes ref url
+* supprimer insee de contribution
 
 DONE
-
-* récupérer les données de la base
-* sauvegarder les données de référence (poubelle, déchets)
