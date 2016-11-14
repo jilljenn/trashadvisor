@@ -160,7 +160,7 @@
 
   /* drag and drop handlers */
   function dragstart_handler(ev) {
-    ev.dataTransfer.setData("text/plain", ev.target.id);
+    ev.dataTransfer.setData("Text", ev.target.id);
     $('#log').val($('#log').val()+'\n DRAG START:'+ev.target.id)
   }
   function dragover_handler(ev) {
@@ -172,7 +172,7 @@
   function drop_handler(ev) {
     $('#log').val($('#log').val()+'\n DROP')
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
+    var data = ev.dataTransfer.getData("Text");
     ev.target.className="dropped";
     var dropZone = $(ev.target).closest(".dustbin").find(".drop-zone");
     $('#log').val($('#log').val()+'\n DROPZONE from ' + data)
