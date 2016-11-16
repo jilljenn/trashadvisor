@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static include_anything %}
 
 {% block head %}
   {{ block.super }}
   <script>
     var iosDragDropShim = { enableEnterLeave: true }
   </script>
-  <script src="{% static "js/ios-drag-drop.js" %}"></script>
+  <script src="{% static 'js/ios-drag-drop.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}">
   <style type="text/css">
     #wastes {
       margin-left:auto;
@@ -60,6 +61,9 @@
       width: 100%;
       height: 300px;
     }
+    svg {
+      background-color: #373a3c;
+    }
   </style>
 {% endblock head %}
 
@@ -71,7 +75,7 @@
       <br>
 
   <form action="{% url 'contribuer' %}" method="post" id="contribution-form">
-
+{% csrf_token %}
 <label for="insee"><strong>Glissez les déchets dans les bonnes poubelles !</strong></label>
 <p id="passwordHelpBlock" class="form-text text-muted">
   En cas de doute, mettez le déchet dans la poubelle "je ne sais pas".
@@ -100,8 +104,6 @@
   </div>
 
   <textarea id="log"></textarea>
-
-
     {% csrf_token %}
     {{ form.as_p }}
     <div class="form-group">
@@ -110,23 +112,27 @@
       <select id="insee" class="form-control"></select>
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block">Contribuer</button>
+    <button type="submit" class="btn btn-default btn-block">Contribuer</button>
     <br>
     <div class="alert alert-success">
-        <p>Votre contribution est anonyme.
-    <br>
-    Les données collectées ont vocation à être ouvertes dans un objectif de création de bien commun.
-    </p>
+      <p>Votre contribution est anonyme.
+        <br>
+        Les données collectées ont vocation à être ouvertes dans un objectif de création de bien commun.
+      </p>
     </div>
   </form>
 
     </div>
     <div class="col-md-5">
-
-  <div id="mapArea" class="blackboard" style="width: 500px;border: 1px solid #c0c0c0;">
-    <svg id="map" xmlns="http://www.w3.org/2000/svg" width="100%" x="0" y="0"></svg>
-  </div>
-
+      {% include_anything '/var/www/media/map2.svg' %}
+      {% for waste in wastes %}
+      <div class="form-check" id="select-waste">
+        <label class="form-check-label">
+          <input class="form-check-input" type="radio" name="wasteSelect" id="exampleRadios1" value="{{ waste.slug }}">
+        {{ waste }}
+        </label>
+      </div>
+      {% endfor %}
     </div>
   </div>
 
@@ -134,11 +140,6 @@
 
 {% block bottom %}
   {{ block.super }}
-
-  <script type="text/javascript">
-    /* geojson2svg client side converter */
-    !function(){function e(e){var t=document.createElementNS("http://www.w3.org/1999/xhtml","div");t.innerHTML='<svg xmlns="http://www.w3.org/2000/svg">'+e+"</svg>";for(var n=document.createDocumentFragment();t.firstChild.firstChild;)n.appendChild(t.firstChild.firstChild);return n}"undefined"!=typeof module&&module.exports&&(module.exports=e),"undefined"!=typeof window&&(window.parseSVG=e)}();
-  </script>
 
   <script type="text/javascript">
 
@@ -181,36 +182,6 @@
     return false;
   }
 
-  /* geojson svg */
-  /*
-  var l =  -4.766667,
-    r = 8.245,
-    b = 42.32944,
-    t = 51.09639;
-
-  var ratio = (t-b)/(-1*l+r);
-
-  var container = document.getElementById('mapArea'),
-    width = container.offsetWidth,
-    svgMap = document.getElementById('map');
-    svgMap.setAttribute('width', width);
-    svgMap.setAttribute('height', width*ratio);
-
-  var converter = geojson2svg(
-    {
-      viewportExtent: {width: width, height: width},
-      attributes: {'style': 'stroke:#000000; fill: #cc99aa;stroke-width:1px;'},
-      mapExtent: {left: l, right: r, bottom: b, top: t}
-    }
-  );
-
-  var geojson = {{ geojson|safe }};
-  for(var i=0; i< geojson.features.length; i++){
-    var svgString = converter.convert(geojson.features[i].geometry);
-    var svg = parseSVG(svgString);
-    svgMap.appendChild(svg);
-  };
-  */
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
@@ -297,5 +268,16 @@
         },
         escapeMarkup: function (markup) { return markup; }
     });
+  </script>
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      $('svg > g > g').removeClass('bouteillePlastique canette alimentaire barquettePlastique verre nonRecyclable emballageCarton papier');
+      $('#select-waste')
+      $('input[type=radio][name=wasteSelect]').change(function() {
+        $('svg > g > g').removeClass('bouteillePlastique canette alimentaire barquettePlastique verre nonRecyclable emballageCarton papier');
+        $('svg > g > g').addClass(this.value);
+      });
+    });
+
   </script>
 {% endblock bottom %}

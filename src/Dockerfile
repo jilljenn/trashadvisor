@@ -12,6 +12,8 @@ RUN apt-get install -y gettext
 
 # GIS lib
 RUN apt-get install -y binutils libproj-dev gdal-bin
+# for svgis
+RUN apt-get install -y libgdal1-dev
 
 # uWSGI
 RUN pip install pip

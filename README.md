@@ -82,9 +82,14 @@ TODO
 
 * sauvegarder waste avec les bonnes ref url
 * supprimer insee de contribution
-* fixer le pb du drag and drop
 * image pour jérome
+
+* le geojson doit indiquer coord speriques : 4326
+* le svgi doit projeter en france DOM = 2154
+
+svgis draw --crs EPSG:2154 --no-inline --bounds -4.766667 42.32944 8.245 51.0963  /var/www/media/geojson.geojson --viewbox -o /var/www/media/map.svg
 
 DONE
 
 * intégrer les arrondissements dans une migration
+* fixer le pb du drag and drop

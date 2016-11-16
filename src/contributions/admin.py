@@ -18,12 +18,12 @@ class CommuneAdmin(admin.ModelAdmin):
 
 
 class WasteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'order', 'image')
-    list_editable = ('order', 'image')
+    list_display = ('id', 'name', 'order', 'image', 'slug')
+    list_editable = ('order', 'image', 'slug')
 
 
 class DustbinAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'order', 'image')
+    list_display = ('id', 'name', 'order', 'image', 'color')
     list_editable = ('order', 'image')
 
 

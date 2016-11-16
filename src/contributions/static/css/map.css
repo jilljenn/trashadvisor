@@ -1,0 +1,53 @@
+
+.bouteillePlastique .bouteillePlastique_none, .canette .canette_none, .emballageCarton .emballageCarton_none, .papier .papier_none, .verre .verre_none, .alimentaire .alimentaire_none, .barquettePlastique .barquettePlastique_none, .nonRecyclable .nonRecyclable_none {
+  fill:gray;
+  stroke:#000;
+  stroke-width:1px;
+}
+
+.bouteillePlastique .bouteillePlastique_yellow, .canette .canette_yellow, .emballageCarton .emballageCarton_yellow, .papier .papier_yellow, .verre .verre_yellow, .alimentaire .alimentaire_yellow, .barquettePlastique .barquettePlastique_yellow, .nonRecyclable .nonRecyclable_yellow {
+  fill:yellow;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_blue, .canette .canette_blue, .emballageCarton .emballageCarton_blue, .papier .papier_blue, .verre .verre_blue, .alimentaire .alimentaire_blue, .barquettePlastique .barquettePlastique_blue, .nonRecyclable .nonRecyclable_blue {
+  fill:blue;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_white, .canette .canette_white, .emballageCarton .emballageCarton_white, .papier .papier_white, .verre .verre_white, .alimentaire .alimentaire_white, .barquettePlastique .barquettePlastique_white, .nonRecyclable .nonRecyclable_white {
+  fill:white;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_red, .canette .canette_red, .emballageCarton .emballageCarton_red, .papier .papier_red, .verre .verre_red, .alimentaire .alimentaire_red, .barquettePlastique .barquettePlastique_red, .nonRecyclable .nonRecyclable_red {
+  fill:red;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_maroon, .canette .canette_maroon, .emballageCarton .emballageCarton_maroon, .papier .papier_maroon, .verre .verre_maroon, .alimentaire .alimentaire_maroon, .barquettePlastique .barquettePlastique_maroon, .nonRecyclable .nonRecyclable_maroon {
+  fill:maroon;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_green, .canette .canette_green, .emballageCarton .emballageCarton_green, .papier .papier_green, .verre .verre_green, .alimentaire .alimentaire_green, .barquettePlastique .barquettePlastique_green, .nonRecyclable .nonRecyclable_green {
+  fill:green;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_gray, .canette .canette_gray, .emballageCarton .emballageCarton_gray, .papier .papier_gray, .verre .verre_gray, .alimentaire .alimentaire_gray, .barquettePlastique .barquettePlastique_gray, .nonRecyclable .nonRecyclable_gray {
+  fill:gray;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_other, .canette .canette_other, .emballageCarton .emballageCarton_other, .papier .papier_other, .verre .verre_other, .alimentaire .alimentaire_other, .barquettePlastique .barquettePlastique_other, .nonRecyclable .nonRecyclable_other {
+  fill:black;
+  stroke:#000;
+  stroke-width:1px;
+}
+.bouteillePlastique .bouteillePlastique_white, .canette .canette_white, .emballageCarton .emballageCarton_white, .papier .papier_white, .verre .verre_white, .alimentaire .alimentaire_white, .barquettePlastique .barquettePlastique_white, .nonRecyclable .nonRecyclable_white {
+  fill:white;
+  stroke:#000;
+  stroke-width:1px;
+}
+

@@ -3,6 +3,8 @@ from collections import Counter
 from datetime import datetime
 import json
 import requests
+import subprocess
+import xml.etree.ElementTree
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -33,6 +35,20 @@ def contribuer(request):
                         waste = Waste.objects.get(id=int(el))
                         trash = Trash(contribution=contribution, waste=waste, dustbin=dustbin)
                         trash.save()
+            # TODO: async
+            with open('/var/www/media/geojson.geojson', 'w') as file_:
+                file_.write(GeoJSONSerializer().serialize(Commune.objects.all(), simplify=0.8, geometry_field='geometry', properties=('insee', 'geometry', 'bouteillePlastique', 'canette', 'emballageCarton', 'papier', 'verre', 'alimentaire', 'barquettePlastique', 'nonRecyclable')))
+            subprocess.call('svgis draw --class-fields insee,bouteillePlastique,canette,emballageCarton,papier,verre,alimentaire,barquettePlastique,nonRecyclable --crs EPSG:2154 --no-inline --bounds -4.766667 42.32944 8.245 51.0963  /var/www/media/geojson.geojson --viewbox -o /var/www/media/map.svg', shell=True)
+            xml.etree.ElementTree.register_namespace('', "http://www.w3.org/2000/svg")
+            tree = xml.etree.ElementTree.parse('/var/www/media/map.svg')
+            et = tree.getroot()
+            et.attrib['height'] = '100%'
+            et.attrib['width'] = '100%'
+            et.remove(et.find('{http://www.w3.org/2000/svg}defs'))
+            tree.write('/var/www/media/map2.svg')
+            # height and width to 100%
+            # remove def style
+
             return redirect('resultat', pk=contribution.id)
 
     return render(request, 'contribuer.html', {

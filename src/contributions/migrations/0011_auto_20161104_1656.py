@@ -18,9 +18,12 @@ def forward(apps, schema_editor):
             coord = r.json()[0]['contour']
         except:
             pass
-        mpoly = GEOSGeometry(json.dumps(coord))
-        commune.geometry = GeometryCollection(mpoly)
-        commune.save()
+        try:
+            mpoly = GEOSGeometry(json.dumps(coord))
+            commune.geometry = GeometryCollection(mpoly)
+            commune.save()
+        except:
+            pass
 
 def backward(apps, schema_editor):
     pass
