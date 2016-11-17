@@ -69,7 +69,7 @@
   <div class="row">
 
     <div class="col-md-7">
-      <h5>De quelles couleurs sont les poubelles dans votre commune ?</h5>
+      <h5>De quelles couleurs sont vos poubelles ?</h5>
       <br>
 
   <form action="{% url 'contribuer' %}" method="post" id="contribution-form">
@@ -124,14 +124,30 @@
     </div>
     <div class="col-md-5">
       {% include_anything '/var/www/media/map2.svg' %}
-      {% for waste in wastes %}
-      <div class="form-check" id="select-waste">
-        <label class="form-check-label">
-          <input class="form-check-input" type="radio" name="wasteSelect" id="exampleRadios1" value="{{ waste.slug }}">
-        {{ waste }}
-        </label>
+      <div class="row">
+        <div class="col-md-6">
+          {% for waste in wastes_left %}
+          <div class="form-check" id="select-waste">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="wasteSelect" id="exampleRadios1" value="{{ waste.slug }}">
+            {{ waste.name }}
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="col-md-6">
+          {% for waste in wastes_right %}
+          <div class="form-check" id="select-waste">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="wasteSelect" id="exampleRadios1" value="{{ waste.slug }}">
+            {{ waste.name }}
+            </label>
+          </div>
+          {% endfor %}
+        </div>
       </div>
-      {% endfor %}
+
+      <a href="{% url 'consulter' %}" class="btn btn-secondary btn-block">Consulter la carte</a>
     </div>
   </div>
 
@@ -282,6 +298,7 @@
         $('svg > g > g').removeClass('bouteillePlastique canette alimentaire barquettePlastique verre nonRecyclable emballageCarton papier');
         $('svg > g > g').addClass(this.value);
       });
+      $("input[type=radio][name=wasteSelect]").first().click();
     });
   </script>
 {% endblock bottom %}

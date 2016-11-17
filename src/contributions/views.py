@@ -67,15 +67,22 @@ def contribuer(request):
             et.attrib['width'] = '100%'
             et.remove(et.find('{http://www.w3.org/2000/svg}defs'))
             tree.write('/var/www/media/map2.svg')
+
             return redirect('resultat', pk=contribution.id)
 
     domain = Site.objects.get_current().domain
 
+    wastes = Waste.objects.all()
+    wastes_left = wastes[:len(wastes)/2]
+    wastes_right = wastes[len(wastes)/2:]
+
     return render(request, 'contribuer.html', {
         'form': ContributionForm(),
-        'wastes': Waste.objects.all(),
+        'wastes': wastes,
         'dustbins': Dustbin.objects.all(),
         'domain': domain,
+        'wastes_left': wastes_left,
+        'wastes_right': wastes_right,
     })
 
 
