@@ -37,8 +37,8 @@ def contribuer(request):
                         trash = Trash(contribution=contribution, waste=waste, dustbin=dustbin)
                         trash.save()
             # TODO: async
-            #with open('/var/www/media/geojson.geojson', 'w') as file_:
-            #    file_.write(GeoJSONSerializer().serialize(Commune.objects.all(), simplify=0.8, geometry_field='geometry', properties=('insee', 'geometry', 'bouteillePlastique', 'canette', 'emballageCarton', 'papier', 'verre', 'alimentaire', 'barquettePlastique', 'nonRecyclable')))
+            with open('/var/www/media/geojson.geojson', 'w') as file_:
+                file_.write(GeoJSONSerializer().serialize(Commune.objects.all(), simplify=0.8, geometry_field='geometry', properties=('insee', 'geometry', 'bouteillePlastique', 'canette', 'emballageCarton', 'papier', 'verre', 'alimentaire', 'barquettePlastique', 'nonRecyclable')))
             subprocess.call('svgis draw --class-fields insee,bouteillePlastique,canette,emballageCarton,papier,verre,alimentaire,barquettePlastique,nonRecyclable --crs EPSG:2154 --no-inline --bounds -4.766667 42.32944 8.245 51.0963  /var/www/media/geojson.geojson --viewbox -o /var/www/media/map.svg', shell=True)
             xml.etree.ElementTree.register_namespace('', "http://www.w3.org/2000/svg")
             tree = xml.etree.ElementTree.parse('/var/www/media/map.svg')
