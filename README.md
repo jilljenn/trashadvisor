@@ -83,9 +83,11 @@ TODO
 * sauvegarder waste avec les bonnes ref url
 * supprimer insee de contribution
 * image pour jérome
-* faire fixture waste avec slug, pareil pour dustbin
+* offline pour calcul carte
+* page resultat : améliorer le style
 
 DONE
 
 * intégrer les arrondissements dans une migration
 * fixer le pb du drag and drop
+* faire fixture waste avec slug, pareil pour dustbin

@@ -1,5 +1,42 @@
 {% extends 'base.html' %}
+{% load static include_anything %}
+
+{% block head %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}">
+
+{% endblock %}
 
 {% block body %}
-{{ foo }}
+
+<div class="row">
+  <div class="col-sm-9">
+{% include_anything '/var/www/media/map2.svg' %}
+</div>
+<div class="col-sm-3">
+      {% for waste in wastes %}
+      <div class="form-check" id="select-waste">
+        <label class="form-check-label">
+          <input class="form-check-input" type="radio" name="wasteSelect" id="exampleRadios1" value="{{ waste.slug }}">
+        {{ waste }}
+        </label>
+      </div>
+      {% endfor %}
+</div>
+</div>
 {% endblock body %}
+
+
+{% block bottom %}
+	{{ block.super }}
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      $('svg > g > g').removeClass('bouteillePlastique canette alimentaire barquettePlastique verre nonRecyclable emballageCarton papier');
+      $('#select-waste')
+      $('input[type=radio][name=wasteSelect]').change(function() {
+        $('svg > g > g').removeClass('bouteillePlastique canette alimentaire barquettePlastique verre nonRecyclable emballageCarton papier');
+        $('svg > g > g').addClass(this.value);
+      });
+    });
+  </script>
+{% endblock %}

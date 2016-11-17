@@ -8,6 +8,7 @@ import xml.etree.ElementTree
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.contrib.sites.models import Site
 
 from djgeojson.serializers import Serializer as GeoJSONSerializer
 
@@ -36,8 +37,8 @@ def contribuer(request):
                         trash = Trash(contribution=contribution, waste=waste, dustbin=dustbin)
                         trash.save()
             # TODO: async
-            with open('/var/www/media/geojson.geojson', 'w') as file_:
-                file_.write(GeoJSONSerializer().serialize(Commune.objects.all(), simplify=0.8, geometry_field='geometry', properties=('insee', 'geometry', 'bouteillePlastique', 'canette', 'emballageCarton', 'papier', 'verre', 'alimentaire', 'barquettePlastique', 'nonRecyclable')))
+            #with open('/var/www/media/geojson.geojson', 'w') as file_:
+            #    file_.write(GeoJSONSerializer().serialize(Commune.objects.all(), simplify=0.8, geometry_field='geometry', properties=('insee', 'geometry', 'bouteillePlastique', 'canette', 'emballageCarton', 'papier', 'verre', 'alimentaire', 'barquettePlastique', 'nonRecyclable')))
             subprocess.call('svgis draw --class-fields insee,bouteillePlastique,canette,emballageCarton,papier,verre,alimentaire,barquettePlastique,nonRecyclable --crs EPSG:2154 --no-inline --bounds -4.766667 42.32944 8.245 51.0963  /var/www/media/geojson.geojson --viewbox -o /var/www/media/map.svg', shell=True)
             xml.etree.ElementTree.register_namespace('', "http://www.w3.org/2000/svg")
             tree = xml.etree.ElementTree.parse('/var/www/media/map.svg')
@@ -48,10 +49,13 @@ def contribuer(request):
             tree.write('/var/www/media/map2.svg')
             return redirect('resultat', pk=contribution.id)
 
+    domain = Site.objects.get_current().domain
+
     return render(request, 'contribuer.html', {
         'form': ContributionForm(),
         'wastes': Waste.objects.all(),
         'dustbins': Dustbin.objects.all(),
+        'domain': domain,
     })
 
 
@@ -135,19 +139,33 @@ def resultat(request, pk):
             data[key] = val
         datas.append({'labels': colors, 'datasets':[{'data': data, 'backgroundColor': backgroundColor}]})
 
+    # Table with color for each waste ordered by waste order for the current contribution
+    contribution_colors = contribution.trash_set.all().values_list('waste__slug', 'dustbin__color')
+
+    waste_contribution_colors = [{waste.slug: None} for waste in wastes]
+    for contribution_color in contribution_colors:
+        for waste_contribution_color in waste_contribution_colors:
+            waste_contribution_color[contribution_color[0]] = contribution_color[1]
+    domain = Site.objects.get_current().domain
+
     return render(request, 'resultat.html', {
         'contributeur_num': contributeur_num,
         'ville': ville,
         'contributeur_num_nat': contributeur_num_nat,
         'communes_couvertes': communes_couvertes,
         'datas': datas,
-        'wastes': wastes
+        'wastes': wastes,
+        'domain': domain,
+        'waste_contribution_colors': waste_contribution_colors[0], # TODO: c'est nimp ! pourquoi [0]
     })
 
 
 def consulter(request):
+    wastes = Waste.objects.all().order_by('order')
+    domain = Site.objects.get_current().domain
     return render(request, 'consulter.html', {
-        'foo': 'bar',
+        'domain': domain,
+        'wastes': wastes,
     })
 
 

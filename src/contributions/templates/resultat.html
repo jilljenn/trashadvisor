@@ -7,19 +7,65 @@
     Chart.defaults.global.legend.display = false;
     Chart.defaults.global.tooltips.enabled = false;
   </script>
+  <style type="text/css">
+    #wastes {
+      margin-left:auto;
+      margin-right:auto;
+      text-align: center;
+    }
+    #wastes > div {
+      display:inline-block;
+      vertical-align: top;
+    }
+    .waste {
+      width:60px;
+      height: 85px;
+      text-align: center;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      cursor: pointer;
+      margin:3px;
+      font-size: 0.6em
+    }
+    .waste img {
+      width:50px;
+      height: 50px;
+    }
+  </style>
+
 {% endblock head %}
 
 {% block body %}
-  <h1>Merci ! Vous êtes le {{ contributeur_num }}{{ contributeur_num|pluralize:"er,ème" }} contributeur pour {{ ville|upper }}</h1>
+<div class="row">
+  <div class="col-sm-12">
+  <h5>Merci ! Vous êtes le {{ contributeur_num }}<sup>{{ contributeur_num|pluralize:"er,ème" }}</sup> contributeur pour {{ ville|upper }}</h5>
+  <hr>
+  <h6>{{ ville|upper }}</h6>
+  </div>
+
+</div>
+
 
   <div class="row">
     {% for waste in wastes %}
     <div class="col-sm-1">
-      <img class="img-responsive" src="{{ waste.image.url }}">
+      <div class="waste" id="waste-{{ waste.id }}" data-waste="{{ waste.id }}">
+        <img draggable="false" src="{{ waste.image.url }}" alt="{{ waste.name }}">
+        {{ waste.name|title }}
+      </div>
     </div>
     {% endfor %}
   </div>
-
+  <h6>Votre contribution</h6>
+  <div class="row">
+  {% for key, val in waste_contribution_colors.items %}
+    <div class="col-sm-1" ">
+     <div style="color: {{ val }}; text-align: center;font-size: 5em;line-height:0.65;"> ● </div>
+    </div>
+  {% endfor %}
+  </div>
+  <br>
+  <h6>L'ensemble des contributions pour {{ ville|upper }}</h6>
   <div class="row">
     {% for data in datas %}
     <div class="col-sm-1">
@@ -28,6 +74,10 @@
         var ctx = document.getElementById("myChart{{ forloop.counter0 }}");
         var myChart = new Chart(ctx, {
           type: 'pie',
+          animation: {
+            animateRotate: false,
+            animateScale: false
+          },
           data: {{ data|safe }}
         })
       </script>
@@ -36,8 +86,20 @@
   </div>
 
   <div class="row">
-    Vous êtes le {{ contributeur_num_nat }}{{ contributeur_num_nat|pluralize:"er,ème" }} contributeur au niveau national.
+  <div class="col-sm-12">
+  <br>
+  <p class="lead">
+    Vous êtes le <strong>{{ contributeur_num_nat }}<sup>{{ contributeur_num_nat|pluralize:"er,ème" }}</sup> contributeur</strong> au niveau national.
     <br>
-    Grâce à votre contribution la couleur des poubelles est recensée dans {{ communes_couvertes }} communes.
+    Grâce à votre contribution la couleur des poubelles est recensée dans <strong>{{ communes_couvertes }} communes</strong>.
+    </p>
+  <br>
+    </div>
+
+    <div class="col-sm-12">
+      <a href="{% url 'consulter' %}" class="btn btn-secondary">Voir la carte de toutes les contributions</a>
+    </div>
+
   </div>
+      <br>
 {% endblock body %}
