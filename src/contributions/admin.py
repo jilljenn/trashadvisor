@@ -23,8 +23,8 @@ class WasteAdmin(admin.ModelAdmin):
 
 
 class DustbinAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'order', 'image', 'color')
-    list_editable = ('order', 'image')
+    list_display = ('id', 'name', 'order', 'image', 'color', 'slug')
+    list_editable = ('order', 'image', 'slug')
 
 
 admin.site.register(Dustbin, DustbinAdmin)

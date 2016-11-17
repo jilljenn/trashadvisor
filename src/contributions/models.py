@@ -14,6 +14,7 @@ class Dustbin(models.Model):
     color = models.CharField(max_length=7)
     image = models.ImageField(upload_to="dustbin/", blank=True, null=True)
     name = models.CharField(max_length=20)
+    slug = models.CharField(max_length=100, default="vide")
 
     def __unicode__(self):
         return self.name

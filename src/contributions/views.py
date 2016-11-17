@@ -46,14 +46,10 @@ def contribuer(request):
             et.attrib['width'] = '100%'
             et.remove(et.find('{http://www.w3.org/2000/svg}defs'))
             tree.write('/var/www/media/map2.svg')
-            # height and width to 100%
-            # remove def style
-
             return redirect('resultat', pk=contribution.id)
 
     return render(request, 'contribuer.html', {
         'form': ContributionForm(),
-        'geojson': GeoJSONSerializer().serialize(Commune.objects.all(), geometry_field='geometry', properties=('insee', 'geometry')),
         'wastes': Waste.objects.all(),
         'dustbins': Dustbin.objects.all(),
     })
