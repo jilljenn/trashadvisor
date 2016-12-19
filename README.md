@@ -85,6 +85,7 @@ TODO
 * image pour jérome
 * offline pour calcul carte
 * page resultat : améliorer le style
+* carte
 
 DONE
 
