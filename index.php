@@ -222,10 +222,11 @@ border: 1px solid #EEE;
       </ol>
       <div class="carousel-inner" role="listbox">
         <div class="item">
-          <?php /*<img class="first-slide" alt="First slide" src="">*/ ?>
+          <?php /*<img class="first-slide" alt="First slide" src="">*/
+		>
           <div class="container">
             <div class="carousel-caption">
-			   <h2>De quelles couleurs sont les poubelles dans votre commune ?</h2>
+			   <h2>De quelles couleurs sont les poubelles dans votre commune ?</h2>
 			   <img  class="img-responsive center-block bord1" src="img/contribuer.png"><br>
                <p><a class="btn btn-lg btn-primary" role="button" href="contribuer.php"><span class="glyphicon glyphicon-hand-right"></span> Contribuer !</a></p>
             </div>
